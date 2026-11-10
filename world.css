@@ -1,1 +1,342 @@
-/* Add your own styles */
+/* ==========================================================
+   World Database Lookup: Forerunner ring-world theme
+   Ancient alloy, corroded by ages, still lit by hardlight.
+   Works with the starter index.html (header / main / #controls
+   / #result) and the table that world.php outputs.
+   Fonts load from Google Fonts when online; the fallbacks keep
+   the look intact offline.
+   ========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;500;600&display=swap");
+
+:root {
+  /* Corroded metal */
+  --basalt: #101416;
+  --alloy: #1b2124;
+  --alloy-lit: #2a3236;
+  --rust: #9a512a;
+  --rust-deep: #5a2b16;
+  --bronze: #a58a5a;
+  --verdigris: #3f7a6e;
+
+  /* Still-working technology */
+  --hardlight: #6af2e8;
+
+  --text: #d3e2de;
+  --text-dim: #8fa5a0;
+
+  --display: "Michroma", "Eurostile", "Century Gothic", "Trebuchet MS", sans-serif;
+  --body: "Rajdhani", "Segoe UI", "Trebuchet MS", sans-serif;
+  --runes: "Noto Sans Runic", "Segoe UI Historic", "Segoe UI Symbol", "Apple Symbols", serif;
+
+  --chamfer: 18px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--verdigris);
+  color: #fff;
+}
+
+/* ---------- Page and the ring on the horizon ---------- */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--body);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(63, 122, 110, 0.22), transparent 60%),
+    radial-gradient(ellipse at 50% 120%, rgba(154, 81, 42, 0.18), transparent 55%),
+    var(--basalt);
+  overflow-x: hidden;
+}
+
+/* A huge, faint arc of the ring curving behind the title */
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  top: 2vh;
+  left: 50%;
+  width: 130vw;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 2.2vw solid rgba(120, 150, 140, 0.16);
+  outline: 1px solid rgba(106, 242, 232, 0.22);
+  outline-offset: 1.6vw;
+  box-shadow:
+    0 0 5vw rgba(106, 242, 232, 0.10),
+    inset 0 0 4vw rgba(106, 242, 232, 0.06);
+  animation: awaken 2.6s ease-out both;
+}
+
+/* The one orchestrated moment: the ring powers on at page load */
+@keyframes awaken {
+  0%   { opacity: 0;   filter: brightness(3); }
+  35%  { opacity: 0.9; filter: brightness(2); }
+  100% { opacity: 1;   filter: none; }
+}
+
+/* ---------- Title ---------- */
+
+header {
+  text-align: center;
+  padding: clamp(3rem, 9vh, 5.5rem) 1rem 2.2rem;
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4.2vw, 2.5rem);
+  letter-spacing: 0.08em;
+  color: #c9f5f0;
+  text-shadow:
+    0 0 0.6em rgba(106, 242, 232, 0.45),
+    0 2px 0 #000;
+}
+
+/* A band of runes under the title, corroded to rust */
+h1::after {
+  content: "ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ";
+  display: block;
+  margin-top: 0.9rem;
+  font-family: var(--runes);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.7em;
+  text-indent: 0.7em;
+  color: var(--rust);
+  text-shadow: 0 0 0.8em rgba(154, 81, 42, 0.6);
+}
+
+/* ---------- The monolith panel ---------- */
+
+main {
+  position: relative;
+  width: min(960px, 92vw);
+  margin: 0 auto 4rem;
+  padding: 2.2rem clamp(1rem, 4vw, 2.5rem) 2.5rem;
+  border: 2px solid #46524f;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.65);
+
+  /* Chamfered corners, like cut slabs */
+  clip-path: polygon(
+    var(--chamfer) 0,
+    calc(100% - var(--chamfer)) 0,
+    100% var(--chamfer),
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    var(--chamfer) 100%,
+    0 calc(100% - var(--chamfer)),
+    0 var(--chamfer)
+  );
+
+  /* Layers, top to bottom: rust stain, verdigris stain, corrosion
+     blotches, fine pitting, then the base alloy */
+  background:
+    radial-gradient(circle at 0% 100%, rgba(154, 81, 42, 0.38), transparent 38%),
+    radial-gradient(circle at 100% 0%, rgba(63, 122, 110, 0.30), transparent 32%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .6  0 0 0 0 .28  0 0 0 0 .12  1.2 0 0 0 -.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E") 0 0 / 700px 700px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .75  0 0 0 0 .65  0 0 0 0 .5  0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 300px 300px,
+    linear-gradient(160deg, var(--alloy-lit), var(--alloy) 45%, #14191b);
+}
+
+/* Fine hardlight inlay etched just inside the edge */
+main::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(106, 242, 232, 0.18);
+  pointer-events: none;
+}
+
+/* ---------- Controls ---------- */
+
+#controls {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+label[for="country"] {
+  font-family: var(--display);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--bronze);
+}
+
+input[type="search"] {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: inherit;
+  font-size: 1.15rem;
+  color: #e8fffb;
+  padding: 0.65rem 0.9rem;
+  background: linear-gradient(#0a0d0e, #12171a);
+  border: 1px solid #3b4745;
+  border-bottom: 2px solid var(--verdigris);
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  caret-color: var(--hardlight);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="search"]::placeholder {
+  color: #5f726e;
+}
+
+input[type="search"]:focus {
+  border-bottom-color: var(--hardlight);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.8),
+    0 0 14px rgba(106, 242, 232, 0.35);
+}
+
+/* Bronze buttons that wake up into hardlight */
+button {
+  font-family: var(--display);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: #f0d9bf;
+  padding: 0.8rem 1.3rem;
+  cursor: pointer;
+  border: 1px solid var(--bronze);
+  background: linear-gradient(180deg, #6b3a20, var(--rust-deep));
+  text-shadow: 0 1px 0 #000;
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
+  transition: color 0.2s, background 0.2s, border-color 0.2s, text-shadow 0.2s;
+}
+
+/* The second button ("Lookup Cities" in Exercise 5) is verdigris */
+button + button {
+  color: #d5efe9;
+  border-color: #79a89f;
+  background: linear-gradient(180deg, #3b6a62, #213d38);
+}
+
+button:hover,
+button:focus-visible {
+  color: #dffffb;
+  border-color: var(--hardlight);
+  background: linear-gradient(180deg, #2f6f66, #173c38);
+  text-shadow: 0 0 0.7em var(--hardlight);
+}
+
+/* clip-path would hide a normal outline, so focus is drawn inside */
+button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--hardlight);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Results table ---------- */
+
+#result {
+  position: relative;
+  margin-top: 2rem;
+  overflow-x: auto;
+  scrollbar-color: var(--verdigris) var(--basalt);
+}
+
+table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+}
+
+thead th {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-align: left;
+  color: var(--hardlight);
+  padding: 0.8rem 0.9rem;
+  border-bottom: 2px solid var(--verdigris);
+  background: linear-gradient(180deg, rgba(106, 242, 232, 0.10), transparent);
+  text-shadow: 0 0 0.8em rgba(106, 242, 232, 0.5);
+}
+
+tbody td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid rgba(165, 138, 90, 0.22);
+  transition: background 0.15s, color 0.15s;
+}
+
+tbody tr:nth-child(odd) td {
+  background: rgba(154, 81, 42, 0.07);
+}
+
+/* First column is the thing you looked up: engraved with a rune */
+tbody td:first-child {
+  color: #e9d6b8;
+  font-weight: 600;
+}
+
+tbody td:first-child::before {
+  content: "ᛉ";
+  font-family: var(--runes);
+  margin-right: 0.6em;
+  color: var(--rust);
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+tbody tr:hover td {
+  background: rgba(106, 242, 232, 0.08);
+  color: #fff;
+}
+
+tbody tr:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--hardlight);
+}
+
+tbody tr:hover td:first-child::before {
+  color: var(--hardlight);
+  text-shadow: 0 0 0.6em var(--hardlight);
+}
+
+/* ---------- Small screens and motion preferences ---------- */
+
+@media (max-width: 520px) {
+  :root {
+    --chamfer: 12px;
+  }
+
+  button {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  * {
+    transition: none !important;
+  }
+}
